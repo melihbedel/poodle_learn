@@ -89,11 +89,14 @@ def get_records(session: Session, table: DeclarativeMeta, **kwargs) -> list:
     records = query.all()
     return records
 
-    
 
-#add_record(session, Student, email='another@mail.com', password='anotherpassword', first_name='Another', last_name='Student')
+# def add_teacher():
+#     pass
 
-students: list[Student] = get_records(session, Student, first_name='Melih')
 
-for student in students:
-    print(student.email, student.first_name)
+# add_record(session, Student, email='another@mail.com', password='anotherpassword', first_name='Another', last_name='Student')
+
+# students: list[Student] = get_records(session, Student, first_name='Melih')
+
+# for student in students:
+#     print(student.email, student.first_name)
