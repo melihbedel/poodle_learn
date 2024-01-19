@@ -7,7 +7,8 @@ def login(data: UserData, user_type: str):
 
     account = None
 
-    if database.get_records(database.session, user_type, email=data.email)
+    if database.get_records(database.session, user_type, email=data.email):
+        pass
 
 
 def register(data: UserData, user_type: str):

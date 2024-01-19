@@ -25,4 +25,4 @@ def login(
     data: UserData,
     type: str = Query(enum=["teacher", "student"])
 ):
-    
+    pass
