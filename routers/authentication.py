@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Query, Form
+from fastapi import APIRouter, Query, HTTPException
 from models.user_data import UserData
 from services.authenticaion import authentication_service
 
@@ -11,6 +11,8 @@ def register(
     data: UserData,
     type: str = Query(enum=["teacher", "student"])
 ):
+    if authentication_service.user_exists(data.email):
+        raise HTTPException(status_code=400, detail='User already exists')
     
     authentication_service.register(data, type)
 
@@ -23,4 +25,4 @@ def login(
     data: UserData,
     type: str = Query(enum=["teacher", "student"])
 ):
-    pass
+    
