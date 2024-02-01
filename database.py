@@ -8,22 +8,15 @@ engine = create_engine(DATABASE_URL)
 
 Base = declarative_base()
 
-class Student(Base):
-    __tablename__ = 'students'
-    id = Column(Integer, primary_key=True)
-    email = Column(String(45), nullable=False)
-    password = Column(String(45), nullable=False)
-    first_name = Column(String(45), nullable=False)
-    last_name = Column(String(45), nullable=False)
-
-
 class Teacher(Base):
     __tablename__ = 'teachers'
     id = Column(Integer, primary_key=True)
     email = Column(String(45), nullable=False)
-    password = Column(String(45), nullable=False)
+    password = Column(String(200), nullable=False)
     first_name = Column(String(45), nullable=False)
     last_name = Column(String(45), nullable=False)
+
+    courses = relationship('Course', back_populates='teacher')
 
 
 class Course(Base):
@@ -33,9 +26,12 @@ class Course(Base):
     title = Column(String(45), nullable=False, unique=True)
     description = Column(String(45), nullable=False)
     objectives = Column(String(45), nullable=False)
-    tags = Column(String(45), nullable=False)
     private = Column(Boolean, nullable=False)
+
     teacher = relationship('Teacher', back_populates='courses')
+    sections = relationship('Section', back_populates='course')
+    students = relationship('StudentSubscription', back_populates='course')
+    tags = relationship('CourseTag', back_populates='course')
 
 
 class Section(Base):
@@ -46,21 +42,46 @@ class Section(Base):
     content = Column(String(45), nullable=False)
     description = Column(String(45))
     information = Column(String(45))
+
     course = relationship('Course', back_populates='sections')
+
+
+class Student(Base):
+    __tablename__ = 'students'
+    id = Column(Integer, primary_key=True)
+    email = Column(String(45), nullable=False)
+    password = Column(String(200), nullable=False)
+    first_name = Column(String(45), nullable=False)
+    last_name = Column(String(45), nullable=False)
+
+    subscriptions = relationship('StudentSubscription', back_populates='student')
 
 
 class StudentSubscription(Base):
     __tablename__ = 'student_subscriptions'
     student_id = Column(Integer, ForeignKey('students.id'), primary_key=True)
     course_id = Column(Integer, ForeignKey('courses.id'), primary_key=True)
+
     student = relationship('Student', back_populates='subscriptions')
     course = relationship('Course', back_populates='students')
 
 
-Teacher.courses = relationship('Course', back_populates='teacher')
-Course.sections = relationship('Section', back_populates='course')
-Student.subscriptions = relationship('StudentSubscription', back_populates='student')
-Course.students = relationship('StudentSubscription', back_populates='course')
+class Tag(Base):
+    __tablename__ = 'tags'
+    id = Column(Integer, primary_key=True)
+    tag = Column(String(45), nullable=False)
+
+    courses = relationship('CourseTag', back_populates='tag')
+
+
+class CourseTag(Base):
+    __tablename__ = 'course_has_tags'
+    course_id = Column(Integer, ForeignKey('courses.id'), primary_key=True)
+    tag_id = Column(Integer, ForeignKey('tags.id'), primary_key=True)
+
+    course = relationship('Course', back_populates='tags')
+    tag = relationship('Tag', back_populates='courses')
+
 
 Base.metadata.create_all(engine)
 
@@ -70,16 +91,16 @@ session = Session()
 
 
 
-def add_record(session: Session, table: DeclarativeMeta, **kwargs) -> bool:
+def add_record(session: Session, table: DeclarativeMeta, **kwargs):
 
     new_record = table(**kwargs)
     session.add(new_record)
     session.commit()
-    return True
+    return new_record
     
     
 
-def get_records(session: Session, table: DeclarativeMeta, **kwargs) -> list:
+def get_record(session: Session, table: DeclarativeMeta, **kwargs) -> list:
 
     query = session.query(table)
 
