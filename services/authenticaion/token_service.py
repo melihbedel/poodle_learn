@@ -1,6 +1,5 @@
-from services.authenticaion.authentication_service import hash_password
+from services.authenticaion import authentication_service
 import database
-from models.authentication import LoginData
 import jwt
 
 SECRET_KEY = "your-secret-key"
@@ -20,8 +19,8 @@ def create_payload(user: database.Teacher|database.Student, type: str):
     }
     return result
 
-def check_token(token: str):
+def check_token(token: str) -> database.Teacher|database.Student|None:
     payload = decode_jwt_token(token)
     if payload:
-        return database.get_record(database.session, payload['type'], email=payload['email'])[0]
+        return database.get_record(authentication_service.get_type(payload['type']), email=payload['email'])
     return False

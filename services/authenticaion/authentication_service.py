@@ -3,8 +3,8 @@ from models.authentication import RegisterData, LoginData
 
 
 def login(data: LoginData, user_type: str):
-    user_type: database.Teacher|database.Student = get_type(user_type)
-    account: database.Teacher|database.Student = database.get_record(database.session, user_type, email=data.email)[0]
+    user_type = get_type(user_type)
+    account: database.Teacher|database.Student = database.get_record(user_type, email=data.email)
 
     if account and account.password == hash_password(data.password):
         return account
@@ -15,13 +15,13 @@ def register(data: RegisterData, user_type: str):
 
     data.password = hash_password(data.password)
 
-    database.add_record(database.session, user_type, email=data.email, password=data.password, first_name=data.first_name, last_name=data.last_name)
+    database.add_record(user_type, email=data.email, password=data.password, first_name=data.first_name, last_name=data.last_name)
 
 
-def user_exists(email):
-    if database.get_record(database.session, database.Student, email=email):
+def user_exists(email: str):
+    if database.get_record(database.Student, email=email):
         return True
-    if database.get_record(database.session, database.Teacher, email=email):
+    if database.get_record(database.Teacher, email=email):
         return True
     return False
 
@@ -31,7 +31,7 @@ def hash_password(password: str):
     return sha256(password.encode('utf-8')).hexdigest()
 
 
-def get_type(user_type: str):
+def get_type(user_type: str) -> database.Teacher|database.Student:
     if user_type=='teacher': user_type = database.Teacher
     if user_type=='student': user_type = database.Student
     return user_type
