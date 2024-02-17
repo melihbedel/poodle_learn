@@ -14,7 +14,7 @@ def register(
     if authentication_service.user_exists(data.email):
         raise HTTPException(status_code=400, detail='User already exists')
     
-    authentication_service.register(data, type)
+    return authentication_service.register(data, type)
 
 
 

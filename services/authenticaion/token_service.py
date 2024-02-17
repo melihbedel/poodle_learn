@@ -1,3 +1,6 @@
+from fastapi import HTTPException
+from models.teacher import Teacher
+from models.student import Student
 from services.authenticaion import authentication_service
 import database
 import jwt
@@ -12,15 +15,16 @@ def create_jwt_token(payload: dict) -> str:
 def decode_jwt_token(token: str) -> dict:
     return jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
 
-def create_payload(user: database.Teacher|database.Student, type: str):
+def create_payload(user: Teacher|Student, type: str):
     result = {
         'email': user.email,
         'type': type
     }
     return result
 
-def check_token(token: str) -> database.Teacher|database.Student|None:
-    payload = decode_jwt_token(token)
-    if payload:
+def check_token(token: str) -> Teacher|Student|None:
+    try:
+        payload = decode_jwt_token(token)
         return database.get_record(authentication_service.get_type(payload['type']), email=payload['email'])
-    return False
+    except:
+        raise HTTPException(status_code=401, detail='Invalid user.')

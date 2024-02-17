@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Header
-from models.courses import CreateCourse, CreateSection
+from models.course import CreateCourse
+from models.section import CreateSection
 from services import course_service
 from services.authenticaion import token_service
 import database
