@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from database import Base
+from models.section import Section
 
 
 class Course(Base):
@@ -40,10 +41,10 @@ class ViewCourse(BaseModel):
     description: str
     objectives: str
     tags: list[str]
-    sections: list[str]
+    sections: list
     
     @classmethod
-    def create_course(cls, id: int,title: str, description: str, objectives: str, tags: list[str], sections: list[str]):
+    def create_course(cls, id: int,title: str, description: str, objectives: str, tags: list[str], sections: list):
         return cls(
             id=id,
             title=title,

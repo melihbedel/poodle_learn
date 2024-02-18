@@ -1,5 +1,6 @@
-from models.teacher import Teacher, ViewTeacher, EditTeacher
+from models.teacher import Teacher, ViewTeacher
 from models.course import CourseCard, Course
+from models.authentication import EditAccount
 from services import course_service
 from services.authenticaion import authentication_service
 import database
@@ -24,21 +25,23 @@ def get_teacher_course_cards(teacher_id: int) -> list[CourseCard]:
     return course_cards
 
 
-def edit_teacher(updated_info: EditTeacher, account: Teacher):
-    original_update = EditTeacher(password=updated_info.password, first_name=updated_info.first_name, last_name=updated_info.last_name)
+def edit_teacher(update_info: EditAccount, account: Teacher):
 
-    if updated_info.password:
-        updated_info.password = authentication_service.hash_password(updated_info.password)
+    update_info_dict = update_info.model_dump(exclude_unset=True)
 
-    updated_info_dict = updated_info.model_dump(exclude_unset=True)
+    update = {}
+
+    for key, value in update_info_dict.items():
+        update[key] = value
+
+    if 'password' in update:
+        update['password'] = authentication_service.hash_password(update['password'])
+
 
     session = database.Session()
     session.add(account)
-
-    session.execute(database.update(Teacher).where(Teacher.id==account.id).values(**updated_info_dict))
-
+    session.execute(database.update(Teacher).where(Teacher.id==account.id).values(**update))
+    session.commit()
     session.close()
 
-    original_update_dict = original_update.model_dump(exclude_unset=True)
-
-    return {f"'{attr}' is set to '{value}'" for attr, value in original_update_dict.items()}
+    return {f"'{attr}' is set to '{value}'" for attr, value in update_info_dict.items()}

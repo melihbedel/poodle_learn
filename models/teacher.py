@@ -31,8 +31,3 @@ class ViewTeacher(BaseModel):
             last_name=last_name,
             courses=courses
         )
-    
-class EditTeacher(BaseModel):
-    password: str|None = None
-    first_name: str|None = None
-    last_name: str|None = None

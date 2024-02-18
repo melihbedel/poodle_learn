@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from models.course import CourseCard
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from database import Base
@@ -28,18 +29,13 @@ class ViewStudent(BaseModel):
     username: str
     first_name: str
     last_name: str
-    subscriptions: list[str]
+    subscriptions: list[CourseCard]
 
     @classmethod
-    def create_view_teacher(cls, username: str, first_name: str, last_name: str, subscriptions: list[str]):
+    def create_view_student(cls, username: str, first_name: str, last_name: str, subscriptions: list[CourseCard]):
         return cls(
             username=username,
             first_name=first_name,
             last_name=last_name,
             subscriptions=subscriptions
         )
-    
-class EditStudent(BaseModel):
-    password: str|None = None
-    first_name: str|None = None
-    last_name: str|None = None

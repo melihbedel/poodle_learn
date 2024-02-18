@@ -11,3 +11,9 @@ class RegisterData(BaseModel):
     password: str
     first_name: str
     last_name: str
+
+
+class EditAccount(BaseModel):
+    password: str|None = None
+    first_name: str|None = None
+    last_name: str|None = None

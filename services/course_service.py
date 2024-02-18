@@ -1,5 +1,5 @@
 from models.course import CourseCard, CreateCourse, Course, ViewCourse, CourseTag
-from models.section import CreateSection, Section
+from models.section import CreateSection, Section, ViewSection
 from models.tag import Tag
 import database
 
@@ -25,9 +25,18 @@ def create_course(owner_id: int, course: CreateCourse):
 
 def get_course_by_id(id):
     course: Course = database.get_record(Course, id=id)
+
     session = database.Session()
     session.add(course)
-    course_view = ViewCourse.create_course(course.id, course.title, course.description, course.objectives, [tag.tag for tag in course.tags], course.sections)
+    
+    course_view = ViewCourse.create_course(course.id,
+                                           course.title,
+                                           course.description,
+                                           course.objectives,
+                                           [tag.tag for tag in course.tags],
+                                           [ViewSection.create_section(section.id, section.title, section.description, section.content) for section in course.sections]
+)
+    
     session.close()
     return course_view
 

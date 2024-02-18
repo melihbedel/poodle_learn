@@ -2,6 +2,7 @@ from fastapi import APIRouter, Header, HTTPException
 from services.authenticaion import token_service
 from services import teacher_service
 from services import student_service
+from models.authentication import EditAccount
 from models import teacher
 from models import student
 import database
@@ -26,15 +27,14 @@ def view_profile(
 
 @account_router.put('', status_code=200)
 def update_profile(
-    edited_teacher: teacher.EditTeacher,
+    update_info: EditAccount,
     x_token = Header(default=None)
 ):
     
     account = token_service.check_token(x_token)
 
     if type(account) == teacher.Teacher:
-        return teacher_service.edit_teacher(updated_info=edited_teacher, account=account)
+        return teacher_service.edit_teacher(update_info, account)
 
-
-    elif type(account) == student.Student:
-        pass
+    if type(account) == student.Student:
+        return student_service.edit_student(update_info, account)

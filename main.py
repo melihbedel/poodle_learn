@@ -7,5 +7,5 @@ app = FastAPI()
 
 app.include_router(register_router)
 app.include_router(login_router)
-app.include_router(courses_router)
 app.include_router(account_router)
+app.include_router(courses_router)
