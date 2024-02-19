@@ -12,7 +12,6 @@ def login(data: LoginData, user_type: str):
     if account and account.password == hash_password(data.password):
         return account
     raise HTTPException(status_code=400, detail='Invalid login data.')
-    
 
 
 def register(data: RegisterData, user_type: str):
@@ -22,9 +21,7 @@ def register(data: RegisterData, user_type: str):
 
     database.add_record(user_type, email=data.email, password=data.password, first_name=data.first_name, last_name=data.last_name)
 
-    return f'User {data.email} registered successfully.'
-
-
+    return f'{data.email} registered successfully.'
 
 
 def user_exists(email: str):

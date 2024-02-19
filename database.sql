@@ -26,9 +26,11 @@ CREATE TABLE IF NOT EXISTS `poodle_learn`.`teachers` (
   `password` VARCHAR(200) NOT NULL,
   `first_name` VARCHAR(45) NOT NULL,
   `last_name` VARCHAR(45) NOT NULL,
+  `phone_number` VARCHAR(10) NULL DEFAULT NULL,
+  `linkedin` VARCHAR(100) NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 6
+AUTO_INCREMENT = 13
 DEFAULT CHARACTER SET = utf8mb4;
 
 
@@ -39,8 +41,8 @@ CREATE TABLE IF NOT EXISTS `poodle_learn`.`courses` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `owner_id` INT(11) NOT NULL,
   `title` VARCHAR(45) NOT NULL,
-  `description` VARCHAR(45) NOT NULL,
-  `objectives` VARCHAR(45) NOT NULL,
+  `description` VARCHAR(200) NOT NULL,
+  `objectives` VARCHAR(200) NOT NULL,
   `private` TINYINT(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `title_UNIQUE` (`title` ASC) VISIBLE,
@@ -51,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `poodle_learn`.`courses` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 16
+AUTO_INCREMENT = 28
 DEFAULT CHARACTER SET = utf8mb4;
 
 
@@ -63,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `poodle_learn`.`tags` (
   `tag` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 12
+AUTO_INCREMENT = 28
 DEFAULT CHARACTER SET = utf8mb4;
 
 
@@ -97,8 +99,9 @@ CREATE TABLE IF NOT EXISTS `poodle_learn`.`sections` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `course_id` INT(11) NOT NULL,
   `title` VARCHAR(45) NOT NULL,
-  `description` VARCHAR(45) NULL DEFAULT NULL,
+  `description` VARCHAR(200) NULL DEFAULT NULL,
   `content` VARCHAR(500) NOT NULL,
+  `link` VARCHAR(200) NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_Sections_Courses1_idx` (`course_id` ASC) VISIBLE,
   CONSTRAINT `fk_Sections_Courses1`
@@ -107,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `poodle_learn`.`sections` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 7
+AUTO_INCREMENT = 18
 DEFAULT CHARACTER SET = utf8mb4;
 
 
@@ -122,7 +125,7 @@ CREATE TABLE IF NOT EXISTS `poodle_learn`.`students` (
   `last_name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 19
+AUTO_INCREMENT = 23
 DEFAULT CHARACTER SET = utf8mb4;
 
 

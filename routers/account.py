@@ -3,9 +3,9 @@ from services.authenticaion import token_service
 from services import teacher_service
 from services import student_service
 from models.authentication import EditAccount
+from models.course import EditCourse
 from models import teacher
 from models import student
-import database
 
 
 account_router = APIRouter(prefix='/account', tags=['Account',])
@@ -27,7 +27,7 @@ def view_profile(
 
 @account_router.put('', status_code=200)
 def update_profile(
-    update_info: EditAccount,
+    update_info: EditAccount|EditCourse,
     x_token = Header(default=None)
 ):
     

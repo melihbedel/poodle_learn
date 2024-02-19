@@ -1,4 +1,5 @@
-from pydantic import BaseModel
+from typing import Annotated
+from pydantic import BaseModel, StringConstraints
 from models.course import CourseCard
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
@@ -26,13 +27,17 @@ class StudentSubscription(Base):
 
 
 class ViewStudent(BaseModel):
-    username: str
-    first_name: str
-    last_name: str
+    username: Annotated[str, StringConstraints(pattern='^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,5}$')]
+    first_name: Annotated[str, StringConstraints(pattern='^\w{2,45}$')]
+    last_name: Annotated[str, StringConstraints(pattern='^\w{2,45}$')]
     subscriptions: list[CourseCard]
 
     @classmethod
-    def create_view_student(cls, username: str, first_name: str, last_name: str, subscriptions: list[CourseCard]):
+    def create_view_student(cls,
+                            username: Annotated[str, StringConstraints(pattern='^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,5}$')],
+                            first_name: Annotated[str, StringConstraints(pattern='^\w{2,45}$')],
+                            last_name: Annotated[str, StringConstraints(pattern='^\w{2,45}$')],
+                            subscriptions: list[CourseCard]):
         return cls(
             username=username,
             first_name=first_name,

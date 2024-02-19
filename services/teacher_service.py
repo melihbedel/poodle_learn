@@ -10,7 +10,7 @@ def profile(account: Teacher):
     session = database.Session()
     session.add(account)
 
-    profile = ViewTeacher.create_view_teacher(account.email, account.first_name, account.last_name, get_teacher_course_cards(account.id))
+    profile = ViewTeacher.create_view_teacher(account.email, account.first_name, account.last_name, get_teacher_course_cards(account.id), account.phone_number, account.linkedin)
 
     session.close()
 
@@ -44,4 +44,4 @@ def edit_teacher(update_info: EditAccount, account: Teacher):
     session.commit()
     session.close()
 
-    return {f"'{attr}' is set to '{value}'" for attr, value in update_info_dict.items()}
+    return {f"'{attr}' is set to '{value}'" for attr, value in update_info_dict.items()}    
