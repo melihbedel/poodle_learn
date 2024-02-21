@@ -16,26 +16,26 @@ class Section(Base):
 
 
 class CreateSection(BaseModel):
-    title: Annotated[str, StringConstraints(pattern='^\w{2,45}$')]
-    description: Optional[Annotated[str, StringConstraints(pattern='^\w{5,200}$')]]
+    title: Annotated[str, StringConstraints(pattern='^.{2,45}$')]
+    description: Optional[Annotated[str, StringConstraints(pattern='^.{5,200}$')]]|None = None
     content: str
-    link: Optional[Annotated[str, StringConstraints(pattern='^https?://(?:www\.)?[\w-]+\.[a-z]{2,}(?:/[^/\s]*)*$')]]
+    link: Optional[Annotated[str, StringConstraints(pattern='^https?://(?:www\.)?[\w-]+\.[a-z]{2,}(?:/[^/\s]*)*$')]]|None = None
 
 
 class ViewSection(BaseModel):
     id: int
-    title: Annotated[str, StringConstraints(pattern='^\w{2,45}$')]
-    description: Optional[Annotated[str, StringConstraints(pattern='^\w{5,200}$')]]
+    title: Annotated[str, StringConstraints(pattern='^.{2,45}$')]
+    description: Optional[Annotated[str, StringConstraints(pattern='^.{5,200}$')]]|None = None
     content: str
-    link: Optional[Annotated[str, StringConstraints(pattern='^https?://(?:www\.)?[\w-]+\.[a-z]{2,}(?:/[^/\s]*)*$')]]
+    link: Optional[Annotated[str, StringConstraints(pattern='^https?://(?:www\.)?[\w-]+\.[a-z]{2,}(?:/[^/\s]*)*$')]]|None
 
     @classmethod
     def create_section(cls,
                        id: int,
-                       title: Annotated[str, StringConstraints(pattern='^\w{2,45}$')],
-                       description: Optional[Annotated[str, StringConstraints(pattern='^\w{5,200}$')]],
+                       title: Annotated[str, StringConstraints(pattern='^.{2,45}$')],
                        content: str,
-                       link: Optional[Annotated[str, StringConstraints(pattern='^https?://(?:www\.)?[\w-]+\.[a-z]{2,}(?:/[^/\s]*)*$')]]):
+                       description: Optional[Annotated[str, StringConstraints(pattern='^.{5,200}$')]]|None = None,
+                       link: Optional[Annotated[str, StringConstraints(pattern='^https?://(?:www\.)?[\w-]+\.[a-z]{2,}(?:/[^/\s]*)*$')]]|None = None):
         return cls(
             id=id,
             title=title,
@@ -47,14 +47,14 @@ class ViewSection(BaseModel):
 
 class SectionCard(BaseModel):
     id: int
-    title: Annotated[str, StringConstraints(pattern='^\w{2,45}$')]
-    description: Optional[Annotated[str, StringConstraints(pattern='^\w{5,200}$')]]
+    title: Annotated[str, StringConstraints(pattern='^.{2,45}$')]
+    description: Optional[Annotated[str, StringConstraints(pattern='^.{5,200}$')]]|None = None
 
     @classmethod
     def create_section_card(cls,
                             id: int,
-                            title: Annotated[str, StringConstraints(pattern='^\w{2,45}$')],
-                            description: Optional[Annotated[str, StringConstraints(pattern='^\w{5,200}$')]]):
+                            title: Annotated[str, StringConstraints(pattern='^.{2,45}$')],
+                            description: Optional[Annotated[str, StringConstraints(pattern='^.{5,200}$')]]|None = None):
         return cls(
             id=id,
             title=title,
@@ -63,7 +63,7 @@ class SectionCard(BaseModel):
 
 
 class EditSection(BaseModel):
-    title: Annotated[str, StringConstraints(pattern='^\w{2,45}$')]
-    description: Optional[Annotated[str, StringConstraints(pattern='^\w{5,200}$')]]
-    content: str
-    link: Optional[Annotated[str, StringConstraints(pattern='^https?://(?:www\.)?[\w-]+\.[a-z]{2,}(?:/[^/\s]*)*$')]]
+    title: Annotated[str, StringConstraints(pattern='^.{2,45}$')]|None = None
+    description: Optional[Annotated[str, StringConstraints(pattern='^.{5,200}$')]]|None = None
+    content: str|None = None
+    link: Optional[Annotated[str, StringConstraints(pattern='^https?://(?:www\.)?[\w-]+\.[a-z]{2,}(?:/[^/\s]*)*$')]]|None = None

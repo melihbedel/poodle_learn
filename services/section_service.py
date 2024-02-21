@@ -3,16 +3,22 @@ import database
 
 
 def create_section(course_id: int, section: CreateSection):
-    database.add_record(Section, course_id=course_id, title=section.title, description=section.description, content=section.content, information=section.link)
+    section = database.add_record(Section, course_id=course_id, title=section.title, description=section.description, content=section.content, link=section.link)
+    session = database.Session()
+    session.add(section)
+    section_id = section.id
+    session.close()
+    return get_section_by_id(section_id)
 
 
 def get_section_by_id(section_id):
     session = database.Session()
     section: Section = session.query(Section).filter_by(id=section_id).first()
-    section_view: Section = ViewSection.create_section(section.id, section.title, section.description, section.content, section.link)
+    section_view: ViewSection = ViewSection.create_section(id=section.id, title=section.title, description=section.description, content=section.content, link=section.link)
+    section_dict = section_view.model_dump(exclude_none=True)
     session.close()
 
-    return section_view
+    return section_dict
 
 
 def edit_section(update_info: EditSection, section_id: int):

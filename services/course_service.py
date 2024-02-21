@@ -61,7 +61,10 @@ def edit_course(update_info: EditCourse, course_id: int):
             tag_list = tags['add_tag']
             for tag in tag_list:
                 new_tag = create_tag(tag)
+                session = database.Session()
+                session.add(new_tag)
                 add_tag(course_id, new_tag.id)
+                session.close()
         if 'remove_tag' in tags:
             for tag in tags['remove_tag']:
                 remove_tag(course_id, tag_id_by_tag_name(tag))

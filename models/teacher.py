@@ -25,8 +25,8 @@ class ViewTeacher(BaseModel):
     first_name: Annotated[str, StringConstraints(pattern='^\w{2,45}$')]
     last_name: Annotated[str, StringConstraints(pattern='^\w{2,45}$')]
     courses: list[CourseCard]
-    phone_number: Annotated[str, StringConstraints(pattern='^\w{10,10}$')]
-    linkedin: Annotated[str, StringConstraints(pattern='^https?://(www\.)?linkedin\.com/in/[a-zA-Z0-9_-]+/?$')]
+    phone_number: Annotated[str, StringConstraints(pattern='^\w{10,10}$')]|None
+    linkedin: Annotated[str, StringConstraints(pattern='^https?://(www\.)?linkedin\.com/in/[a-zA-Z0-9_-]+/?$')]|None
 
 
     @classmethod
@@ -35,8 +35,8 @@ class ViewTeacher(BaseModel):
                             first_name: Annotated[str, StringConstraints(pattern='^\w{2,45}$')],
                             last_name: Annotated[str, StringConstraints(pattern='^\w{2,45}$')],
                             courses: list[CourseCard],
-                            phone_number: Annotated[str, StringConstraints(pattern='^\w{10,10}$')],
-                            linkedin: Annotated[str, StringConstraints(pattern='^https?://(www\.)?linkedin\.com/in/[a-zA-Z0-9_-]+/?$')]):
+                            phone_number: Annotated[str, StringConstraints(pattern='^\w{8,10}$')]|None,
+                            linkedin: Annotated[str, StringConstraints(pattern='^https?://(www\.)?linkedin\.com/in/[a-zA-Z0-9_-]+/?$')]|None):
         return cls(
             username=username,
             first_name=first_name,

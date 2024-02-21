@@ -29,18 +29,18 @@ class CourseTag(Base):
 
 
 class CreateCourse(BaseModel):
-    title: Annotated[str, StringConstraints(pattern='^\w{2,45}$')]
-    description: Annotated[str, StringConstraints(pattern='^\w{5,200}$')]
-    objectives: Annotated[str, StringConstraints(pattern='^\w{5,200}$')]
+    title: Annotated[str, StringConstraints(pattern='^.{2,45}$')]
+    description: Annotated[str, StringConstraints(pattern='^.{5,200}$')]
+    objectives: Annotated[str, StringConstraints(pattern='^.{5,200}$')]
     private: bool
-    tags: list[str]
+    tags: list[Annotated[str, StringConstraints(pattern='^\w{2,45}$')]]
 
 
 class ViewCourse(BaseModel):
     id: int
     title: Annotated[str, StringConstraints(pattern='^\w{2,45}$')]
-    description: Annotated[str, StringConstraints(pattern='^\w{5,200}$')]
-    objectives: Annotated[str, StringConstraints(pattern='^\w{5,200}$')]
+    description: Annotated[str, StringConstraints(pattern='^.{5,200}$')]
+    objectives: Annotated[str, StringConstraints(pattern='^.{5,200}$')]
     tags: list[Annotated[str, StringConstraints(pattern='^\w{2,45}$')]]
     sections: list
     
@@ -48,8 +48,8 @@ class ViewCourse(BaseModel):
     def create_course(cls,
                       id: int,
                       title: Annotated[str, StringConstraints(pattern='^\w{2,45}$')],
-                      description: Annotated[str, StringConstraints(pattern='^\w{5,200}$')],
-                      objectives: Annotated[str, StringConstraints(pattern='^\w{5,200}$')],
+                      description: Annotated[str, StringConstraints(pattern='^.{5,200}$')],
+                      objectives: Annotated[str, StringConstraints(pattern='^.{5,200}$')],
                       tags: list[Annotated[str, StringConstraints(pattern='^\w{2,45}$')]],
                       sections: list):
         return cls(
@@ -64,15 +64,15 @@ class ViewCourse(BaseModel):
 
 class CourseCard(BaseModel):
     id: int
-    title: Annotated[str, StringConstraints(pattern='^\w{2,45}$')]
-    description: Annotated[str, StringConstraints(pattern='^\w{5,200}$')]
+    title: Annotated[str, StringConstraints(pattern='^.{2,45}$')]
+    description: Annotated[str, StringConstraints(pattern='^.{5,200}$')]
     tags: list[Annotated[str, StringConstraints(pattern='^\w{2,45}$')]]
 
     @classmethod
     def create_card(cls,
                     id: int,
-                    title: Annotated[str, StringConstraints(pattern='^\w{2,45}$')],
-                    description: Annotated[str, StringConstraints(pattern='^\w{5,200}$')],
+                    title: Annotated[str, StringConstraints(pattern='^.{2,45}$')],
+                    description: Annotated[str, StringConstraints(pattern='^.{5,200}$')],
                     tags: list[Annotated[str, StringConstraints(pattern='^\w{2,45}$')]]):
         return cls(
             id=id,
@@ -83,25 +83,25 @@ class CourseCard(BaseModel):
 
 
 class EditCourse(BaseModel):
-    title: Annotated[str, StringConstraints(pattern='^\w{2,45}$')]|None = None
-    description: Annotated[str, StringConstraints(pattern='^\w{5,200}$')]|None = None
-    objectives: Annotated[str, StringConstraints(pattern='^\w{5,200}$')]|None = None
+    title: Annotated[str, StringConstraints(pattern='^.{2,45}$')]|None = None
+    description: Annotated[str, StringConstraints(pattern='^.{5,200}$')]|None = None
+    objectives: Annotated[str, StringConstraints(pattern='^.{5,200}$')]|None = None
     private: bool|None = None
-    add_tag: list[str]|None = None
-    remove_tag: list[str]|None = None
+    add_tag: list[Annotated[str, StringConstraints(pattern='^\w{2,45}$')]]|None = None
+    remove_tag: list[Annotated[str, StringConstraints(pattern='^\w{2,45}$')]]|None = None
 
 
 class EditInfo(BaseModel):
-    title: Annotated[str, StringConstraints(pattern='^\w{2,45}$')]|None = None
-    description: Annotated[str, StringConstraints(pattern='^\w{5,200}$')]|None = None
-    objectives: Annotated[str, StringConstraints(pattern='^\w{5,200}$')]|None = None
+    title: Annotated[str, StringConstraints(pattern='^.{2,45}$')]|None = None
+    description: Annotated[str, StringConstraints(pattern='^.{5,200}$')]|None = None
+    objectives: Annotated[str, StringConstraints(pattern='^.{5,200}$')]|None = None
     private: bool|None = None
 
     @classmethod
     def create_edit_info(cls,
-                         title: Annotated[str, StringConstraints(pattern='^\w{2,45}$')]|None,
-                         description: Annotated[str, StringConstraints(pattern='^\w{5,200}$')]|None,
-                         objectives: Annotated[str, StringConstraints(pattern='^\w{5,200}$')]|None,
+                         title: Annotated[str, StringConstraints(pattern='^.{2,45}$')]|None,
+                         description: Annotated[str, StringConstraints(pattern='^.{5,200}$')]|None,
+                         objectives: Annotated[str, StringConstraints(pattern='^.{5,200}$')]|None,
                          private: bool|None):
         return cls(
             title=title,
@@ -112,13 +112,13 @@ class EditInfo(BaseModel):
 
 
 class EditTags(BaseModel):
-    add_tag: list[str]|None = None
-    remove_tag: list[str]|None = None
+    add_tag: list[Annotated[str, StringConstraints(pattern='^\w{2,45}$')]]|None = None
+    remove_tag: list[Annotated[str, StringConstraints(pattern='^\w{2,45}$')]]|None = None
 
     @classmethod
     def create_edit_tags(cls,
-                         add_tag: list[str]|None,
-                         remove_tag: list[str]|None):
+                         add_tag: list[Annotated[str, StringConstraints(pattern='^\w{2,45}$')]]|None,
+                         remove_tag: list[Annotated[str, StringConstraints(pattern='^\w{2,45}$')]]|None):
         return cls(
             add_tag=add_tag,
             remove_tag=remove_tag

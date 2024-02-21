@@ -10,11 +10,11 @@ def profile(account: Teacher):
     session = database.Session()
     session.add(account)
 
-    profile = ViewTeacher.create_view_teacher(account.email, account.first_name, account.last_name, get_teacher_course_cards(account.id), account.phone_number, account.linkedin)
-
+    profile: ViewTeacher = ViewTeacher.create_view_teacher(account.email, account.first_name, account.last_name, get_teacher_course_cards(account.id), account.phone_number, account.linkedin)
+    final = profile.model_dump(exclude_none=True)
     session.close()
 
-    return profile
+    return final
 
 
 def get_teacher_course_cards(teacher_id: int) -> list[CourseCard]:

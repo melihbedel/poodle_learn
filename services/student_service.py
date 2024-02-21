@@ -12,10 +12,11 @@ def profile(account: Student):
     session.add(account)
 
     profile = ViewStudent.create_view_student(account.email, account.first_name, account.last_name, get_student_subscriptions(account.id))
+    final = profile.model_dump(exclude_none=True)
 
     session.close()
 
-    return profile
+    return final
 
 
 def get_student_subscriptions(student_id: int) -> list[str]:

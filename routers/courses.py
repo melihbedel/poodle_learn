@@ -92,9 +92,7 @@ def add_section(
     if not course_service.is_owner(id, user):
         raise HTTPException(status_code=403, detail='You must be the owner of the course to edit.')
 
-    section_service.create_section(course_id=id, section=section)
-
-    return course_service.get_course_by_id(id)
+    return section_service.create_section(course_id=id, section=section)
 
 
 @courses_router.get('/{course_id}/{section_id}', status_code=200)
