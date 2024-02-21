@@ -107,6 +107,8 @@ def view_section(
     if course_service.is_private(course_id):
         if not course_service.is_subscribed(course_id, user):
             raise HTTPException(status_code=401, detail='You cannot access private courses without subscribing.')
+    if not section_service.section_exists(course_id, section_id):
+        raise HTTPException(status_code=404, detail=f'Section ID:{section_id} does not exist in Course ID:{course_id}')
         
     return section_service.get_section_by_id(section_id)
 
